@@ -7,7 +7,8 @@
 %  link for the database: https://nbml.ir/FA/pages/NBML-Free-Databases data: iBCIC2021 
 % data base description according to: A novel hybrid BCI speller based on RSVP and SSVEP paradigm
 
-% 2. Set @LogitBoost in the Matlab path 
+% 2. Set @LogitBoost in the Matlab path
+
 % 3. Run: Main_P300_featureextraction_classification.m file in the folder ...\P300_featureextraction_classification
 
 
