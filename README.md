@@ -10,6 +10,7 @@ link for the database:
 https://nbml.ir/FA/pages/NBML-Free-Databases data: EEG_32Channel_VisualOddball.rar
 
 Set @LogitBoost in the Matlab path
+
 Run: Main_P300_featureextraction_classification.m file in the folder ...\P300_featureextraction_classification
 
 First, the P300 pattern is highlighted in the EEG signal.
