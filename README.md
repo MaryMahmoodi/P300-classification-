@@ -19,5 +19,8 @@ To do this, raw signals are denoised using transient suppression-based convex op
 
 Second, the feature file for each subject (time-electrode matrix of denoised EEG) is saved as an output ".mat" file (features_subi.mat).
 It will be uploaded as input in the CNN classifier Python code.
-The time-electrode-amplitude map for each stimulus image-set of character is plotted 
-Third, the logit boost classifier is applied.
+The time-electrode-amplitude map for each stimulus image, set of characters, is plotted.
+The target stimulus is visually detected among 9 colo-maps.
+
+
+Third, the logit boost classifier is applied for automatic detection of the target stimulus.
