@@ -4,7 +4,10 @@ P300 evokes in your EEG signal when you watch a picture that has been predefined
 How? The code detects P300 and the corresponding set of characters is called the target character.
    
 *P300 feature extraction and classification code*
-link for the database: https://nbml.ir/FA/pages/NBML-Free-Databases data: EEG_32Channel_VisualOddball.rar
+* procedure to handle the code*
+
+link for the database:
+https://nbml.ir/FA/pages/NBML-Free-Databases data: EEG_32Channel_VisualOddball.rar
 
 Set @LogitBoost in the Matlab path
 Run: Main_P300_featureextraction_classification.m file in the folder ...\P300_featureextraction_classification
