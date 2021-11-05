@@ -1,8 +1,9 @@
 # P300-feature extracction-classification
 
-P300 evokes in your EEG signal when you watch a picture that has been predefined in your mind (target picture). If the target picture consists of characters, it can be used in a BCI speller system designed for writing with our mind.
+P300 evokes in your EEG signal when you watch a picture, primarily defined in your mind (target picture). If the target picture consists of characters, it can be used in a BCI speller system designed for writing with our mind.
 How? The code detects P300 and the corresponding set of characters is called the target character.
    
+
 *P300 feature extraction and classification code*
 * procedure to handle the code*
 
