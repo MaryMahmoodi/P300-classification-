@@ -8,7 +8,7 @@ How? The code detects P300 over time for each trial, and the corresponding set o
 * procedure to handle the code*
 
 link for the database:
-https://nbml.ir/FA/pages/NBML-Free-Databases data: EEG_32Channel_VisualOddball.rar
+https://nbml.ir/FA/pages/NBML-Free-Databases data: iBCIC2021 First Step
 
 Set @LogitBoost in the Matlab path
 
