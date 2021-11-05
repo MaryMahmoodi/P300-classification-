@@ -11,10 +11,10 @@
 
 
 %%% concepts %%%
-% P300 evokes in your EEG signal when you watch 
+% P300 evokes in your EEG signal around 300 ms after you watch 
 % a picture, primarily defined in your mind (target picture).
-% If the target picture consists of characters, it can be used in a BCI speller system designed for writing with our mind.
-% How? The code detects P300 and the corresponding set of characters is called the target character.
+% If the target picture consists of characters, it can be used in a BCI speller system designed for writing with your mind.
+% How? The code detects P300 and the corresponding set of characters is typed on the screen.
 
 % First, the P300 pattern is highlighted in the EEG signal. 
 %To do this, raw signals are denoised using transient suppression-based convex optimization and thresholding-based high amplitude artifact suppression.
@@ -25,8 +25,7 @@
  
 % Third, the logit boost classifier is applied.
 
-%%
-% input parameters
+%% input parameters
 clear
 load index_similarstimulusCharacters
 index_images=index_similarstimulusCharacters;
