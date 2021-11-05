@@ -2,7 +2,7 @@
 %%% Procedure to handle the code %%%
 
 %1. Download data and put in the folder ...\P300_featureextraction_classification
-%  link for the database: https://nbml.ir/FA/pages/NBML-Free-Databases data: EEG_32Channel_VisualOddball.rar
+%  link for the database: https://nbml.ir/FA/pages/NBML-Free-Databases data: iBCIC2021 
 % data base description according to: A novel hybrid BCI speller based on RSVP and SSVEP paradigm
 
 % 2. Set @LogitBoost in the Matlab path 
