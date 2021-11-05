@@ -17,6 +17,6 @@ First, the P300 pattern is highlighted in the EEG signal.
 To do this, raw signals are denoised using transient suppression-based convex optimization and thresholding-based high amplitude artifact suppression.
 
 Second, the feature file for each subject (time-electrode matrix of denoised EEG) is saved as an output ".mat" file (features_subi.mat).
-It will be uploaded as input in the CNN classifier code.
+It will be uploaded as input in the CNN classifier Python code.
 
 Third, the logit boost classifier is applied.
