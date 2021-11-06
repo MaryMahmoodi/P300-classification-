@@ -25,7 +25,7 @@
  
 % Third, the logit boost classifier is applied.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% input parameters %%
+%% input parameters 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear
 load index_similarstimulusCharacters
