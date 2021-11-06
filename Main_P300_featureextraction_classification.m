@@ -24,8 +24,9 @@
 %in the CNN classifier code (written in python).
  
 % Third, the logit boost classifier is applied.
-
-%% input parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% input parameters %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear
 load index_similarstimulusCharacters
 index_images=index_similarstimulusCharacters;
@@ -75,15 +76,18 @@ myogenicrejection=1;
 thresh_EMG=20;
 
 blinkingrejection=0;% detection and replacement approach  if blinking_rejection=1;thresh_EMG=80;
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% initial %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 fprintf ('initializing parameters...')
 [signal, time]=initialize_signalattributes(data, training, repetition,f_ssvep , freqrange, Rereference );
 
 %% fix damaged electrodes and Rereferencing
 fprintf (' fix_damagedelectrodes...')
 signal  = fix_damagedelectrodes( signal,Rereference );
-%%  Preprocessing %%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  Preprocessing %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 1.baseline correction
 % 2. Total variation denoising
 % 3.BP filter in the freqrange
@@ -120,20 +124,20 @@ A=1;
 
 fprintf( ' Preprocessing: ')
 toc,
-
-%% P300-RSVP_feature extraction
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% P300-RSVP_feature extraction %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [signal, f ]=P300RSVP_featureextraction ( signal, data,training,repetition );
 
 save ( ['features_sub',num2str(SubjectNumber)','.mat'],  'f')
 
 % num_trial=num_epoch/signal.num_stimulus;
 %num_epochintrial=num_epoch/num_trial;
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% P300 classification with logistic regression (logit boost)
-% %%%%%%%%%%%%%%%%%%%%%%%
-% % %%%%%% Logistric regressor %%%%%%
-% A Boosting Approach to P300 Detection with Application to Brain-Computer Interfaces % %%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Logistric regressor %%%
+% A Boosting Approach to P300 Detection with Application to Brain-Computer Interfaces 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%% normalize feature data for classification %%%
 x=f.P300features;
@@ -143,7 +147,7 @@ x = reshape(x,size(x,1)*size(x,2),size(x,3));
 for num_epoch=1:size(x,2)
     x(:,num_epoch)=x(:,num_epoch)./max(x(:,num_epoch));
 end
-%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 n_channels=size(x,1);
 
 %%% prepare index sets for cross-validation %%%
@@ -196,7 +200,7 @@ fprintf( ' P300 classifier: ')
 toc,
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%
+
 if training
     counttrue=0; %number of true answers with at least 85% accuracy
     for i2=1:size(testsets,2) %number of test_input epochs or signals(each signal has21*45samples)
@@ -214,9 +218,9 @@ if training
     Accuracy_test=counttrue/size(testsets,2)
 end
 
-%%%%%%%%%%%%%%%%%%%%%%
-%%**********calculate classifier detection accuracy for all epochs*******************
-%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% calculate classifier detection accuracy for all epochs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 counttrue3=0; est_y=[];
 for num_epoch=1:size(x,2)
     p3=round(classify(l,x(:,num_epoch)) );
@@ -316,10 +320,10 @@ end
 % y=y;
 time=[1:size(x,2)]/fs;
 
-
-% P300 detection by morphology (time_peak and ramp)
-% show group average of signals for each of 9 stimulus images in each trial%%%
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% P300 detection by morphology (time-electrode amplitude map)
+% show group average of signals for each of 9 stimulus images in each trial
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 allCharacters=signal.Characters(1:size(index_images,1),:);
 est_y=[];
@@ -430,8 +434,9 @@ hold on; xlabel('time (s)')
 
 
 
-
-%% show results
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% show results %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 showplots=1;
 
 figure(5); clf;
@@ -455,8 +460,9 @@ spect=0;
 fs=signal.fs;
 
 time=[1:size(signal.data,2)]./fs;
-
-%% output: P300 features used in our convolutional neural network
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% save the output: P300 features used in our convolutional neural network
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 f=[];
 f.P300features=signal.P300features;
 f.P300labels=signal.P300labels;
