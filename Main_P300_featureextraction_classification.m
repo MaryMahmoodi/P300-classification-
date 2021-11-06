@@ -24,7 +24,7 @@
 %in the CNN classifier code (written in python).
  
 % Third, the logit boost classifier is applied.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% input parameters 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear
@@ -100,7 +100,7 @@ signal  = fix_damagedelectrodes( signal,Rereference );
 tic,
 %%% initialize BP filter parameters %%%
 
-% the Parks-McClellan method is used via the â€˜remezâ€™ function of MATLAB
+% the Parks-McClellan method is used via the ‘remez’ function of MATLAB
 rp = 0.01; % Passband ripple
 rs = 26; % Stopband ripple
 f = freqrange; % Cutoff frequencies
@@ -471,6 +471,3 @@ f.downsamplingfactor=10;
 f.P300freqrange=[0.5 4];%Hz
 
 save ( ['features_sub',num2str(SubjectNumber)','.mat'],  'f')
-
-
-
