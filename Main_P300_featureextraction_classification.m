@@ -28,12 +28,11 @@
 %in the CNN classifier code (written in python).
  
 % Third, the logit boost classifier is applied.
-%%%%%%%%%%%%%%%%%%%%%%%%
-%% input parameters 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear
 clc
-
+%%%%%%%%%%%%%%%%%%%%%%%%
+%% input parameters 
+%%%%%%%%%%%%%%%%%%%%%%%%
 SubjectNumber=1;
 
 load index_similarstimulusCharacters % order of repetition for each of the 9 stimulus images
@@ -70,26 +69,24 @@ myogenicrejection=1;
 thresh_EMG=20;
 blinkingrejection=0;% detection and replacement approach  if blinking_rejection=1;thresh_EMG=80;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 %% initial %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 fprintf ('initializing parameters...')
 [signal, time]=initialize_signalattributes(data, training, repetition,f_ssvep , freqrange, Rereference );
 
 %% fix damaged electrodes and Rereferencing
 fprintf (' fix_damagedelectrodes...')
 signal  = fix_damagedelectrodes( signal,Rereference );
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Preprocessing %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 1.baseline correction
 % 2. Total variation denoising
 % 3.BP filter in the freqrange
 % 4. Myogenic artefact rejection
 % 5. Blinking rejection
 % 6. 4Hz lowpass filter
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % d1= fdesign.bandpass('N,Fst1,Fp1,Fp2,Fst2,C',50,1,1.1,30,maxfreq+0.5,fs);%50,0.01,0.16,45,50.5,fs);%36
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %     Hd1=design(d1,'equiripple');
 
 tic,
 %%% initialize BP filter parameters %%%
@@ -99,19 +96,19 @@ tic,
 
 fprintf( ' Preprocessing Finished ')
 toc,
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 %% P300-RSVP_feature extraction %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
     [signal, f ]=P300RSVP_featureextraction ( signal, data,training,repetition );
     save ( ['features_sub',num2str(SubjectNumber)','.mat'],  'f')
 
 % num_trial=num_epoch/signal.num_stimulus;
 %num_epochintrial=num_epoch/num_trial;
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 %% P300 classification with logistic regression (logit boost)
 %%% Logistric regressor %%%
 % A Boosting Approach to P300 Detection with Application to Brain-Computer Interfaces 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%% normalize feature data for classification %%%
 x=f.P300features;
@@ -121,7 +118,7 @@ x = reshape(x,size(x,1)*size(x,2),size(x,3));
 for num_epoch=1:size(x,2)
     x(:,num_epoch)=x(:,num_epoch)./max(x(:,num_epoch));
 end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 n_channels=size(x,1);
 
 %%% prepare index sets for cross-validation %%%
@@ -192,18 +189,18 @@ if training
     Accuracy_test=counttrue/size(testsets,2)
 end
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 %% calculate classifier detection accuracy and estimated characters for all trials
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 % signal.estCharacters(tr,:)
 % signal.mainCharacters(tr,:)
 % Accuracy_p300;
 [Accuracy_p300,signal]=calculate_accuracy_estCharacters(x,y, signal, l, training,index_images);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 %% P300 detection by morphology (time-electrode amplitude map, time_peak and ramp)
 % show group average of signals for each of 9 stimulus images in each trial
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 % show group average of signals for each of 9 stimulus images in each trial%%%
 elec=10:30;
 % % % %   elec=num_SSVEPchannels;
@@ -213,14 +210,14 @@ trial_number=1;
 training;
 % load P300wave
 show_timeelectrodemap(trial_number, signal, index_similarstimulusCharacters, training, elec, showplots, spect )
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 %% show the signal preprocessing steps %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 trial_number=4;
 show_signalPreprocessings (trial_number, signal,data);
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 %% save the output: P300 features used in our convolutional neural network
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 f=[];
 f.P300features=signal.P300features;
 f.P300labels=signal.P300labels;
@@ -228,4 +225,9 @@ f.fs=signal.fs;
 f.downsamplingfactor=10;
 f.P300freqrange=[0.5 4];%Hz
 
+f. Characters=signal.Characters;
+f.num_trial=signal.num_trial;
+f.num_labels=signal.num_labels;
+
 save ( ['features_sub',num2str(SubjectNumber)','.mat'],  'f')
+
