@@ -28,7 +28,7 @@
 %% input parameters 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear
-load index_similarstimulusCharacters
+load index_similarstimulusCharacters % order of repetition for each of the 9 stimulus images
 index_images=index_similarstimulusCharacters;
 
 SubjectNumber=1;
@@ -100,7 +100,7 @@ signal  = fix_damagedelectrodes( signal,Rereference );
 tic,
 %%% initialize BP filter parameters %%%
 
-% the Parks-McClellan method is used via the ‘remez’ function of MATLAB
+% the Parks-McClellan method is used via the â€˜remezâ€™ function of MATLAB
 rp = 0.01; % Passband ripple
 rs = 26; % Stopband ripple
 f = freqrange; % Cutoff frequencies
