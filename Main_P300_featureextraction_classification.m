@@ -102,12 +102,9 @@ toc,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% P300-RSVP_feature extraction %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if ~exist(['features_sub',num2str(SubjectNumber)','.mat'])
     [signal, f ]=P300RSVP_featureextraction ( signal, data,training,repetition );
     save ( ['features_sub',num2str(SubjectNumber)','.mat'],  'f')
-else
-    load   ( ['features_sub',num2str(SubjectNumber)','.mat']);
-end
+
 % num_trial=num_epoch/signal.num_stimulus;
 %num_epochintrial=num_epoch/num_trial;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
