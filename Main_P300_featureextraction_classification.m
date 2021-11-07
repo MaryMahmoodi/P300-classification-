@@ -1,6 +1,9 @@
 % P300 feature extraction and classification code
-%%% Procedure to handle the code %%%
+% you will see the real and estimated characters for each trial
 
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Procedure to handle the code %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 %1. Download data and put in the folder ...\P300_featureextraction_classification
 %  link for the database: https://nbml.ir/FA/pages/NBML-Free-Databases data: iBCIC2021 
 % data base description according to: A novel hybrid BCI speller based on RSVP and SSVEP paradigm
@@ -9,8 +12,9 @@
 % 3. Run: Main_P300_featureextraction_classification.m file in the folder ...\P300_featureextraction_classification
 
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%
 %%% concepts %%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 % P300 evokes in your EEG signal around 300 ms after you watch 
 % a picture, primarily defined in your mind (target picture).
 % If the target picture consists of characters, it can be used in a BCI speller system designed for writing with your mind.
@@ -24,24 +28,17 @@
 %in the CNN classifier code (written in python).
  
 % Third, the logit boost classifier is applied.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 %% input parameters 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear
-load index_similarstimulusCharacters % order of repetition for each of the 9 stimulus images
-index_images=index_similarstimulusCharacters;
+clc
 
 SubjectNumber=1;
-training=1; % to use training (1) or test data (0)
-repetition=5; % 5 or 3 if training=0, selecet two groups of test data with 5 or 3 repetitions
 
+load index_similarstimulusCharacters % order of repetition for each of the 9 stimulus images
+index_images=index_similarstimulusCharacters;
 trainingLogitBoost=0;% for P300 classification
-
-landau=70; %  transient suppression with Total variation denoising (TVD)
-% % % if no TVD, landau=0;
-Rereference=0;% Rereference all electrodes to the average signal of occipital electrodes
-
-
 
 iter=20; % if low training accuracy, iter=50
 if ~trainingLogitBoost
@@ -49,33 +46,30 @@ if ~trainingLogitBoost
     load (['l_sub',num2str(SubjectNumber),'.mat']);
 end
 
+
+repetition=5; % 5 or 3 if training=0, selecet two groups of test data with 5 or 3 repetitions
+training=1; % to use training (1) or test data (0)
+
 data.TrainLabels=[];
 data = load (['Subject',num2str(SubjectNumber),'_Data.mat']);
 % data.TrainLabels=data.trainLabels;save (['Subject',num2str(SubjectNumber),'_Data.mat'], data);
 
 
-
+landau=70; %  transient suppression with Total variation denoising (TVD)
+% % % if no TVD, landau=0;
+Rereference=0;% Rereference all electrodes to the average signal of occipital electrodes
 fs=data.Fs;
-
-
-% for power-feature extraction
 f_delta=[0.5 4]; f_theta=[4 7]; f_alpha=[8 12];
 f_sigma=[14 16] ;f_beta=[29 31]; f_gama=[44 47];
-
-
-
 f_ssvep=15;%Hz
 maxfreq=47;
 minfreq=0.5;
 freqrange=[minfreq,maxfreq];
-
 showplots=1;%show figures
-
-
 myogenicrejection=1;
 thresh_EMG=20;
+blinkingrejection=0;% detection and replacement approach  if blinking_rejection=1;thresh_EMG=80;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-blinkingrejection=0;% detection and replacement approach  if blinking_rejection=1;thresh_EMG=80;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% initial %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -99,38 +93,21 @@ signal  = fix_damagedelectrodes( signal,Rereference );
 
 tic,
 %%% initialize BP filter parameters %%%
+[filterparams]=initialize_filterparams (fs,freqrange,f_delta,f_theta,f_alpha,f_sigma,f_beta,f_gama);
 
-% the Parks-McClellan method is used via the ‘remez’ function of MATLAB
-rp = 0.01; % Passband ripple
-rs = 26; % Stopband ripple
-f = freqrange; % Cutoff frequencies
-a = [1 0]; % Desired amplitudes
-% Compute deviations
-dev = [(10^(rp/20)-1)/(10^(rp/20)+1) 10^(-rs/20)];
-[n,fo,ao,w] = remezord(f,a,dev,fs);
-B = remez(n,fo,ao,w);
-A=1;
-% freqz(B,A);
-% Cz1=filter(B,A,Cz);
+[ signal ] = Preprocessing_RSVPexperiment( signal,landau,myogenicrejection,thresh_EMG,blinkingrejection,filterparams);
 
-[B1, A1]=butter(6,f_delta/(fs/2),'bandpass');
-[B2, A2]=butter(6,f_theta/(fs/2),'bandpass');
-[B3, A3]=butter(6,f_alpha/(fs/2),'bandpass');
-[B4, A4]=butter(6,f_sigma/(fs/2),'bandpass');
-[B5, A5]=butter(6,f_beta/(fs/2),'bandpass');
-[B6, A6]=butter(6,f_gama/(fs/2),'bandpass');
-
-[ signal ] = Preprocessing_RSVPexperiment( signal,landau,myogenicrejection,thresh_EMG,blinkingrejection,A, B, A1, B1, A2, B2, A3, B3, A4, B4, A5, B5, A6, B6 );
-
-fprintf( ' Preprocessing: ')
+fprintf( ' Preprocessing Finished ')
 toc,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% P300-RSVP_feature extraction %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[signal, f ]=P300RSVP_featureextraction ( signal, data,training,repetition );
-
-save ( ['features_sub',num2str(SubjectNumber)','.mat'],  'f')
-
+if ~exist(['features_sub',num2str(SubjectNumber)','.mat'])
+    [signal, f ]=P300RSVP_featureextraction ( signal, data,training,repetition );
+    save ( ['features_sub',num2str(SubjectNumber)','.mat'],  'f')
+else
+    load   ( ['features_sub',num2str(SubjectNumber)','.mat']);
+end
 % num_trial=num_epoch/signal.num_stimulus;
 %num_epochintrial=num_epoch/num_trial;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
