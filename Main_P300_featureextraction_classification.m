@@ -5,33 +5,33 @@
 %%% Procedure to handle the code %%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 %1. Download data and put in the folder ...\P300_featureextraction_classification
-%  link for the database: https://nbml.ir/FA/pages/NBML-Free-Databases data: iBCIC2021 
+%  link for the database: https://nbml.ir/FA/pages/NBML-Free-Databases data: iBCIC2021
 % data base description according to: A novel hybrid BCI speller based on RSVP and SSVEP paradigm
 
-% 2. Set @LogitBoost in the Matlab path 
+% 2. Set @LogitBoost in the Matlab path
 % 3. Run: Main_P300_featureextraction_classification.m file in the folder ...\P300_featureextraction_classification
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%% concepts %%%
 %%%%%%%%%%%%%%%%%%%%%%%%
-% P300 evokes in your EEG signal around 300 ms after you watch 
+% P300 evokes in your EEG signal around 300 ms after you watch
 % a picture, primarily defined in your mind (target picture).
 % If the target picture consists of characters, it can be used in a BCI speller system designed for writing with your mind.
 % How? The code detects the presence of P300 on the EEG in the duration of each stimulus image, and the corresponding set of characters is typed on the screen at the end of a trial.
 
-% First, the P300 pattern is highlighted in the EEG signal. 
+% First, the P300 pattern is highlighted in the EEG signal.
 %To do this, raw signals are denoised using transient suppression-based convex optimization and thresholding-based high amplitude artifact suppression.
 
-% Second, the feature file for each subject (time-electrode matrix of denoised EEG) is saved as an output ".mat" file (features_subi.mat). 
+% Second, the feature file for each subject (time-electrode matrix of denoised EEG) is saved as an output ".mat" file (features_subi.mat).
 % It will be uploaded as input feature (time-electrode-amplitude colormap)
 %in the CNN classifier code (written in python).
- 
+
 % Third, the logit boost classifier is applied.
 clear
 clc
 %%%%%%%%%%%%%%%%%%%%%%%%
-%% input parameters 
+%% input parameters
 %%%%%%%%%%%%%%%%%%%%%%%%
 SubjectNumber=1;
 
@@ -99,15 +99,15 @@ toc,
 %%%%%%%%%%%%%%%%%%%%%%%%
 %% P300-RSVP_feature extraction %%
 %%%%%%%%%%%%%%%%%%%%%%%%
-    [signal, f ]=P300RSVP_featureextraction ( signal, data,training,repetition );
-    save ( ['features_sub',num2str(SubjectNumber)','.mat'],  'f')
+[signal, f ]=P300RSVP_featureextraction ( signal, data,training,repetition );
+save ( ['features_sub',num2str(SubjectNumber)','.mat'],  'f')
 
 % num_trial=num_epoch/signal.num_stimulus;
 %num_epochintrial=num_epoch/num_trial;
 %%%%%%%%%%%%%%%%%%%%%%%%
 %% P300 classification with logistic regression (logit boost)
 %%% Logistric regressor %%%
-% A Boosting Approach to P300 Detection with Application to Brain-Computer Interfaces 
+% A Boosting Approach to P300 Detection with Application to Brain-Computer Interfaces
 %%%%%%%%%%%%%%%%%%%%%%%%
 
 %%% normalize feature data for classification %%%
@@ -175,10 +175,10 @@ toc,
 if training
     counttrue=0; %number of true answers with at least 85% accuracy
     for i2=1:size(testsets,2) %number of test_input epochs or signals(each signal has21*45samples)
-       
+        
         p2=round(classify(l,x(:,testsets(i,i2)))); % answer to a specific data
         y2=length(find(p2==y(testsets(i,i2)) ));
-      
+        
         if y2>=.85*length(p2)% iter is number of iterationsor answers of logitboost for each input
             counttrue=counttrue+1;
         end
