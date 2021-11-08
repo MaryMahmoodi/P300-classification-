@@ -44,8 +44,7 @@ if exist(['Subject',num2str(SubjectNumber),'_Data.mat'])
     data = load (['Subject',num2str(SubjectNumber),'_Data.mat']);
     % data.TrainLabels=data.trainLabels;save (['Subject',num2str(SubjectNumber),'_Data.mat'], data);
     fs=data.Fs;
-    
-    
+       
     fprintf ('initializing parameters...')
     [signal, time]=initialize_signalattributes(data, training, repetition,f_ssvep , freqrange, Rereference );
     
