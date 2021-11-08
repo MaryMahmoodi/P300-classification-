@@ -29,7 +29,7 @@ How? The code detects the presence of P300 on the EEG in each epoch of stimulus 
 % First, the P300 pattern is highlighted in the EEG signal. 
 %To do this, raw signals are denoised using transient suppression-based convex optimization and thresholding-based high amplitude artifact suppression.
 
-% Second, the feature file for each subject (time-electrode matrix of denoised EEG) is saved as an output ".mat" file (features_subi.mat). 
+% Second, the feature file for each subject (time-electrode matrix of denoised EEG during each epoch of stimulus ) is saved as an output ".mat" file (features_subi.mat). 
 % It will be uploaded as input feature (time-electrode-amplitude colormap)
 %in the CNN classifier code (written in python).
  
