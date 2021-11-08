@@ -11,6 +11,7 @@
 
 % 3. Run: Main_P300_featureextraction_classification.m file in the folder ...\P300_featureextraction_classification
 or you can run Test_pretrainedP300Classifier.m to see the results with the pretrained classifier (l_subi.mat) for each subject 
+The code writes the trial, the target stimulus label and the estimated labels for each trial.
 
 
 
