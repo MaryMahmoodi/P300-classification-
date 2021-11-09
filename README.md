@@ -1,5 +1,6 @@
 # P300-feature extracction-classification
-#transforming imagination to text
+
+#transforming mind to text through reading and analyzjng brain signals in an xperiment in which the subject focuses on one of the 9 predefined 3-character images in each 10 s trial. 
 
 % P300 feature extraction and classification code
 %%% Procedure to handle the code %%%
