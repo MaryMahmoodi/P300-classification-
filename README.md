@@ -1,4 +1,5 @@
 # P300-feature extracction-classification
+#transforming imagination to text
 
 % P300 feature extraction and classification code
 %%% Procedure to handle the code %%%
