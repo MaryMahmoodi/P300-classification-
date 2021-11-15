@@ -105,8 +105,8 @@ save ( ['features_sub',num2str(SubjectNumber)','.mat'],  'f')
 % num_trial=num_epoch/signal.num_stimulus;
 %num_epochintrial=num_epoch/num_trial;
 %%%%%%%%%%%%%%%%%%%%%%%%
-%% P300 classification with logistic regression (logit boost)
-%%% Logistric regressor %%%
+%% P300 classification with logit boost
+%%% Gradient boosting %%%
 % A Boosting Approach to P300 Detection with Application to Brain-Computer Interfaces
 %%%%%%%%%%%%%%%%%%%%%%%%
 
