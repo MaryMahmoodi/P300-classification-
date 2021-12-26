@@ -97,4 +97,3 @@ end
 % signal.mainCharacters(tr,:)
 % Accuracy_p300;
 [Accuracy_p300,signal]=calculate_accuracy_estCharacters(x,y, f, l, training,index_images);
-
