@@ -12,7 +12,6 @@
 
 % 3. Run: Main_P300_featureextraction_classification.m file in the folder ...\P300_featureextraction_classification
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%% concepts %%%
 %%%%%%%%%%%%%%%%%%%%%%%%
