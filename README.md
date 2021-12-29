@@ -36,4 +36,4 @@ How? The code detects the presence of P300 on the EEG in each epoch of stimulus 
 % It will be uploaded as input feature (time-electrode-amplitude colormap)
 %in the CNN classifier code (written in python).
  
-% Third, the logit boost classifier is applied.
+% Third, the logit boost classifier (gradient boosting; an ensemble of decision trees)  is applied.
