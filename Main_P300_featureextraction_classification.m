@@ -171,7 +171,6 @@ fprintf( ' P300 classifier: ')
 toc,
 
 
-
 if training
     counttrue=0; %number of true answers with at least 85% accuracy
     for i2=1:size(testsets,2) %number of test_input epochs or signals(each signal has21*45samples)
