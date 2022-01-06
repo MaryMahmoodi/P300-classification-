@@ -17,7 +17,6 @@ if ~trainingLogitBoost
     load (['l_sub',num2str(SubjectNumber),'.mat']);
 end
 
-
 repetition=5; % 5 or 3 if training=0, selecet two groups of test data with 5 or 3 repetitions
 training=1; % to use training (1) or test data (0)
 
