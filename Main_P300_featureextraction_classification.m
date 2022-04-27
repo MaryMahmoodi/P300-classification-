@@ -28,6 +28,7 @@
 %in the CNN classifier code (written in python).
 
 % Third, the logit boost classifier is applied.
+
 clear
 clc
 %%%%%%%%%%%%%%%%%%%%%%%%
