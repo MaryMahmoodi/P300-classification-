@@ -164,7 +164,7 @@ end
 % average signal of their neigbor electrodes
 for tr=1:size(signal.data,3)
     for i=1:size(signal.data,1)
-        if max(signal.data (i,:,tr))<1 %damaged electrode
+        if max(signal.data (i,:,tr))<1 || std (signal.data (i,:,tr))<1 %damaged electrode
         signal.data (i,:,tr)=avgsignal(1,:,tr);
         else
             % Rereference all other electrodes to the average signal of occipital electrodes  
@@ -337,7 +337,7 @@ for tr=1:size(signal.data2 ,3)
 for i=1:size(signal.data2  ,1)
 %   figure(2);subplot(7,4,i);hold on;
 sig=signal.data2  (i,:,tr);
-if max(sig)<1
+if max(sig)<1 || std(sig)<1
 %   plot(sig);title((f.Channels2(i)))
 [ mindistance1,index1,distances_ascend, indexes_ascend] = min_distance(chanpos2, chanpos2(i,:) );
 signal.data2  (i,:,tr)=sum(signal.data2  (indexes_ascend(1:4),:,tr))./4;
@@ -365,7 +365,7 @@ end
         starttrial=signal.sample01+(1-1)*signal.sample_stimulus;
         endtrial=starttrial+signal.num_stimulus*signal.sample_stimulus-1;
 
-%         data_forSSVEPclassifier1(1:size(signal.data,1)-1,:,tr)=filter (1,1,signal.data(1:size(signal.data,1)-1,starttrial:endtrial,tr));% whole trial  filter (a2,b2,signal.data(1:size(signal.data,1)-1,starttrial:endtrial,tr));% whole trial
+        data_forSSVEPclassifier1(1:size(signal.data,1)-1,:,tr)=filter (1,1,signal.data(1:size(signal.data,1)-1,starttrial:endtrial,tr));% whole trial  filter (a2,b2,signal.data(1:size(signal.data,1)-1,starttrial:endtrial,tr));% whole trial
            
            
         for ch=1:size(signal.data,1)-1
@@ -378,7 +378,7 @@ end
             epochnumber=epochnumber+1;
             data_forP300classifier(1:size(signal.data,1)-1,:,epochnumber) = signal.dataDWT(1:size(signal.data,1)-1,start1:end1,tr);
             %%%%%%%%%%%%%%%%          
-%                 data_forSSVEPclassifier(1:size(signal.data,1)-1,:,epochnumber)=filter (1,1,signal.data(1:size(signal.data,1)-1,start1:end1,tr));
+                data_forSSVEPclassifier(1:size(signal.data,1)-1,:,epochnumber)=filter (1,1,signal.data(1:size(signal.data,1)-1,start1:end1,tr));
                 start11=start1; end11=end1;
 
                 
@@ -856,7 +856,7 @@ fs=signal.fs;
 
 time=[1:size(signal.data,2)]./fs;
 
-%% output: P300 features
+%% output: P300/SSVEP features
 f=[];
 f.data=signal.data;
 f.P300features=signal.P300features;
@@ -866,7 +866,7 @@ f.downsamplingfactor=10;
 f.P300freqrange=[0.5 4];%Hz
 f.num_stimulus=signal.num_stimulus;
 f.Characters=signal.Characters;% the order of characters shown to subject in each trial
-f.mainCharacters=signal.mainCharacters;% each trial
+f.mainCharacters=signal.Characters(signal.num_labels(1,:),:);% each trial
 f.stimulusCharacters=stimulusCharacters;%all stimulus characters
 f.Channels=signal.Channels;
 f.labels=signal.labels;
@@ -919,19 +919,19 @@ f.data_forSSVEPclassifier1_2  (i,:,tr)=sig;
 end
 end
 
-% for tr=1:size(f.data_forSSVEPclassifier1_2 ,3)
-% for i=1:size(f.data_forSSVEPclassifier1_2  ,1)
-% %    figure(2);subplot(7,4,i);hold on;
-% sig=f.data_forSSVEPclassifier1_2  (i,:,tr);
-% if max(sig)<1 % find electrodes without amplitudes
-%     sprintf(['found one...','electrode:',num2str(i),'tr:',num2str(tr)])
-% f.data_forSSVEPclassifier1_2  (i,:,tr)=sig;
-% %    plot(sig);title((f.Channels2(i)))
-% [ mindistance1,index1,distances_ascend, indexes_ascend] = min_distance(f.chanpos2, f.chanpos2(i,:) );
-% f.data_forSSVEPclassifier1_2  (i,:,tr)=sum(f.data_forSSVEPclassifier1_2  (indexes_ascend(1:4),:,tr))./4;
-% end
-% end
-% end
+for tr=1:size(f.data_forSSVEPclassifier1_2 ,3)
+for i=1:size(f.data_forSSVEPclassifier1_2  ,1)
+%    figure(2);subplot(7,4,i);hold on;
+sig=f.data_forSSVEPclassifier1_2  (i,:,tr);
+if max(sig)<1 || std(sig)<1% find electrodes without amplitudes
+    sprintf(['found one...','electrode:',num2str(i),'tr:',num2str(tr)])
+f.data_forSSVEPclassifier1_2  (i,:,tr)=sig;
+%    plot(sig);title((f.Channels2(i)))
+[ mindistance1,index1,distances_ascend, indexes_ascend] = min_distance(f.chanpos2, f.chanpos2(i,:) );
+f.data_forSSVEPclassifier1_2  (i,:,tr)=sum(f.data_forSSVEPclassifier1_2  (indexes_ascend(1:4),:,tr))./4;
+end
+end
+end
 
 
 for k=1:size(f.data_forSSVEPclassifier_2 ,3)
@@ -961,10 +961,15 @@ f.elec_SSVEP.label=f.Channels2;
 
 % for k=1:size(f.data_forSSVEPclassifier1_2,3)
 % %apply laplacian or TEF
-% f.data_forSSVEPclassifier1_2(:,:,k)=L*f.data_forSSVEPclassifier1_2(:,:,k);
+% f.data_forSSVEPclassifier1_3(:,:,k)=L*f.data_forSSVEPclassifier1_2(:,:,k);
 % end
-
-
+% % % % % calculate power-in a trial
+% for k=1:size(f.data_forSSVEPclassifier1_3,3)
+% for i=1:size(f.data_forSSVEPclassifier1_3(:,:,k),1)
+% f.power2_lap(i,k)=power_SE(f.data_forSSVEPclassifier1_3(i,:,k),f.fs,[f.f_ssvep-1 f.f_ssvep+1]);
+% end
+% f.power2_lap(:,k)=f.power2(:,k)/max(f.power2(:,k));
+% end
 % % % % % calculate power-in a trial
 for k=1:size(f.data_forSSVEPclassifier1_2,3)
 for i=1:size(f.data_forSSVEPclassifier1_2(:,:,k),1)
@@ -1005,18 +1010,17 @@ end
 
 
 
-% % % %     counter=1; %using  headmodel for laplacian_Geo, code to reconstruct headmodel has
-% been suddenly removed
-% % % % for k=1:length(M.Electrode.Label)
-% % % % %      num1=find(strcmp(lower(f.Channels2),lower(M.Electrode.Label{k,1})));
-% % % %     [ mindistance1,index1,distances_ascend, indexes_ascend] = min_distance(f.chanpos2,M.Electrode.Coordinate(k,:)  );
-% % % % f.chanpos_SSVEP(counter,:)=M.Electrode.Coordinate(k,:);
-% % % %      
-% % % %     f.Channels_SSVEP{counter,1}=M.Electrode.Label{k,1};
-% % % %     f.power_SSVEP(counter,:)=f.power2(index1,:);
-% % % %     counter=counter+1;
-% % % %     
-% % % % end
+%     counter=1; %using  headmodel for laplacian_Geo, code to reconstruct headmodel has been sudeenly removed
+% for k=1:length(M.Electrode.Label)
+% %      num1=find(strcmp(lower(f.Channels2),lower(M.Electrode.Label{k,1})));
+%     [ mindistance1,index1,distances_ascend, indexes_ascend] = min_distance(f.chanpos2,M.Electrode.Coordinate(k,:)  );
+% f.chanpos3(counter,:)=M.Electrode.Coordinate(k,:);
+%      
+%     f.Channels3{counter,1}=M.Electrode.Label{k,1};
+%     f.power3(counter,:)=f.power2(index1,:);
+%     counter=counter+1;
+%     
+% end
 
 
 
@@ -1032,20 +1036,33 @@ Values=f.power2(:,1);
 % view (-37.5+(k1-1)*step,30);%rotate to the occipital view and save as an RGB m*n*3 
 % f.triallabel_direction(1)
 
+num_occipital=[ 2 3 5 6 7 8 9 17 18 19 26  28]';
+if ~isempty (num_occipital)
+Channels={};
+for i=1:length(num_occipital)
+Channels{i,1}=f.Channels2{num_occipital(i),1};%f.Channels2
+end
+num=num_occipital;
+else
+    Channels={};
 
-for k=1:25;%size(f.power_SSVEP,2)
+  Channels= f.Channels2; 
+num=[1:length(Channels)]';
+end
+
+for k=1:size(f.power2,2)
 k    
-Values=f.power2_avgepoch(:,k);
+Values=f.power2(num,k);%f.power2 has better map compared with power2_avgepoch  
 % % % Values=L*Values;%Et*Values %L*Values %it makes all maps the same
 % Apply lapacian on power data
-% % % D.Data=f.power2(:,k)';% M*Ne each row contains the values for all electrodes
-% % % D.ExcludeChannel  =[];%column vector numbers of noisy channels
-% % % varargout = ssltool(D,M);
-% % % Values=varargout.Geo';%varargout.Sph  %varargout.Geo
+% D.Data=f.power3(:,k)';% M*Ne each row contains the values for all electrodes
+% D.ExcludeChannel  =[];%column vector numbers of noisy channels
+% varargout = ssltool(D,M);
+% Values=varargout.Sph';%varargout.Sph  %varargout.Geo
 
 [scalpmesh,scalpmesh2, elec, elec_realigned2]=show_3Dbrainmap2( method, Channels, Values,scalpmesh,elec_realigned,0);% or elec or elec_realigned
-figure(2);hold on;
-subplot(5,5,k);
+figure(2);
+hold on; subplot(5,10,k);
 ft_plot_mesh(scalpmesh,'vertexcolor',scalpmesh.power ,'edgecolor','none','facealpha',0.9,'edgealpha',0.9);%title('BrainMap');%'edgecolor','none or [0 0 0]'
 % hold on; ft_plot_sens(f.elec_SSVEP,'label','on','facecolor','r','fontsize',14);%title (method)%'facecolor',electrodecolor
 cM=colorMap([0:0.01:1]');
@@ -1055,15 +1072,15 @@ step=20;k1=16.3;
 view (-37.5+(k1-1)*step,30);%rotate to the occipital view and save as an RGB m*n*3 
 title(['direction:  ',num2str(f.triallabel_direction  (k))])
  image=getframe (); 
-% im=image.cdata; % 3d RGB image with uint8 values between 0 and 255 
-% im=imresize(im,[256,256]);
-% f.im(:,:,:,k)=im;
-% % % %figure;imagesc(f.im(:,:,:,k))
+ im=image.cdata; % 3d RGB image with uint8 values between 0 and 255 
+ im=imresize(im,[256,256]);
+ f.imRGB(:,:,:,k)=im;
+% % % %figure;imagesc(f.imRGB(:,:,:,k))
 % % % imwrite (im  , 'brainmap.jpg');
 end
 
 save ( ['features_sub',num2str(SubjectNumber)','.mat'],  'f')
-
+% load ( ['features_sub',num2str(SubjectNumber)','.mat']);
 %% %%%%%%%%%%%%%%%%%
 % % % rp = 0.01; % Passband ripple
 % % % rs = 26; % Stopband ripple
@@ -1082,14 +1099,14 @@ save ( ['features_sub',num2str(SubjectNumber)','.mat'],  'f')
 % d1= fdesign.bandpass('N,Fst1,Fp1,Fp2,Fst2,C',50,14,14.1,16,16+0.5,f.fs);%50,0.01,0.16,45,50.5,fs);%36
 % Hd1=design(d1,'equiripple');
 % 
-% tr=1;%trial
+ tr=1;%trial
 % for tr=1:size(f.data_forSSVEPclassifier1_2 ,3)
-% for i=1:size(f.data_forSSVEPclassifier1_2  ,1)
-%   figure(2);subplot(7,4,i);hold on;
-% sig=f.data_forSSVEPclassifier1_2  (i,:,tr);
-% % % % % % sig=filter(Hd1,sig);
-%   plot(sig);title((f.Channels2(i)))
-% end
+for i=1:size(f.data_forSSVEPclassifier1_2  ,1)
+  figure(2);subplot(7,4,i);hold on;
+sig=f.data_forSSVEPclassifier1_2  (i,:,tr);
+% % % % % sig=filter(Hd1,sig);
+  plot(sig);title((f.Channels2(i)))
+end
 % end
 % 
 
