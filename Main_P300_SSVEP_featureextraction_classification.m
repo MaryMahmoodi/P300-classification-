@@ -1,6 +1,5 @@
 clear
 load index_similarstimulusCharacters
-
 load headmodel;
 load ('scalpmesh');
 load elec_realigned_67;
@@ -181,7 +180,7 @@ end
 % d1= fdesign.bandpass('N,Fst1,Fp1,Fp2,Fst2,C',50,1,1.1,30,maxfreq+0.5,fs);%50,0.01,0.16,45,50.5,fs);%36
 %     Hd1=design(d1,'equiripple');
 
-% the Parks-McClellan method is used via the ‘remez’ function of MATLAB
+% the Parks-McClellan method is used via the â€˜remezâ€™ function of MATLAB
 rp = 0.01; % Passband ripple
 rs = 26; % Stopband ripple
 f = freqrange; % Cutoff frequencies
@@ -193,7 +192,7 @@ B = remez(n,fo,ao,w);
 A=1;
 % freqz(B,A);
 % Cz1=filter(B,A,Cz);
-    % the Parks-McClellan method is used via the ‘remez’ function of MATLAB
+    % the Parks-McClellan method is used via the â€˜remezâ€™ function of MATLAB
 rp = 0.01; % Passband ripple
 rs = 26; % Stopband ripple
 a = [1 0]; % Desired amplitudes
