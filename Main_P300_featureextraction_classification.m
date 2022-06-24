@@ -1,6 +1,7 @@
 % P300 feature extraction and classification code
 % you will see the real and estimated characters for each trial
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%% Procedure to handle the code %%%
 %%%%%%%%%%%%%%%%%%%%%%%%
