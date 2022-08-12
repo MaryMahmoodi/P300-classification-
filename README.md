@@ -20,7 +20,7 @@ The code calculates the classification accuracy and writes the trial, the target
 
 **Concepts**
 
-- P300 evokes as a positive peak on your EEG signal around 300 ms after you watch 
+- P300 is evoked as a positive peak on your EEG signal around 300 ms after you watch 
 a picture, primarily defined in your mind (target picture).
 - If the target picture consists of characters, it can be used in a BCI speller system designed for writing with your mind.
 
