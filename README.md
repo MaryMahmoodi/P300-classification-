@@ -1,4 +1,4 @@
-# Efficient CNN based P300 Classification in an RSVP Experiment
+# An efficient CNN based P300 Classification in an RSVP Experiment
 
 ## Transforming mind to text through reading and analyzing brain signals in an experiment in which the subject focuses on one of the 9 predefined 3-character images in each 10 seconds trial. 
 
