@@ -12,7 +12,6 @@
 % 2. Set @LogitBoost in the Matlab path
 % 3. Run: Main_P300_featureextraction_classification.m file in the folder ...\P300_featureextraction_classification
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%% concepts %%%
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -29,6 +28,8 @@
 %in the CNN classifier code (written in python).
 
 % Third, the logit boost classifier is applied.
+
+
 
 clear
 clc
