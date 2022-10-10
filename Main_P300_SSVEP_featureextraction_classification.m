@@ -15,8 +15,6 @@ landau=70; %  transient suppression with Total variation denoising (TVD)
 Rereference=0;% Rereference all electrodes to the average signal of occipital electrodes
 
 
-
-
 iter=20; % if low training accuracy, iter=50
 if ~trainingLogitBoost
 l =LogitBoost(iter, 0.05, 1);%LogitBoost number of iterations=50,
