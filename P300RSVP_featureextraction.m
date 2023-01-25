@@ -68,6 +68,7 @@ for tr=1:size(signal.data,3) % trial
     end
 end
 
+
 signal.data_forP300classifier=data_forP300classifier;
 signal.powerfeaturedata=powerfeaturedata;
 signal.epochlabel_P300=reshape(signal.epochlabel_P300, 1, size(signal.epochlabel_P300,1)*size(signal.epochlabel_P300,2));
@@ -86,6 +87,7 @@ counter=1;
 step=signal.num_stimulus;
 elec=1:32;
 
+
 x=zeros(size(signal.data_forP300classifier,1), size(signal.data_forP300classifier,2),  size(index_images,1)*size(signal.data,3) );
 counter2=1;
 step2=size(index_images,1);
@@ -95,6 +97,7 @@ for tr=1: size(signal.data,3)
     if ~isempty(signal.num_labels); num_target= signal.num_labels(1,tr); else num_target=size(index_images,1)+1; end
     A=signal.data_forP300classifier(elec,:,counter:counter+step-1);
     counter=counter+step;
+
     
     for ch=1:size(A,1) %synchronized averaging around similar stimulus images at each electrode
         y1=zeros(1,size(index_images,1));
@@ -108,6 +111,7 @@ for tr=1: size(signal.data,3)
     if training
         y=[y label];
     end
+
     x (:,:,counter2:counter2+step2-1)= B;
     counter2=counter2+step2;
     
