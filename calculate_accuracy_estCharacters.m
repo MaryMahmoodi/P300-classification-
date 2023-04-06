@@ -1,4 +1,5 @@
 function [ Accuracy_p300,signal ] = calculate_accuracy_estCharacters( x,y, signal, l, training, index_images )
+
 %%% inputs %%%
 % x (l, num_epochs): each column is a feature vector for an epoch (occurance of an stimulus
 % image)
@@ -13,7 +14,8 @@ function [ Accuracy_p300,signal ] = calculate_accuracy_estCharacters( x,y, signa
 %%%% output %%%
 %  signal.estnum_labels2
 % signal.estCharacters % for each trial
-% 
+ 
+
 allCharacters=signal.Characters(1:size(index_images,1),:);
 for tr=1:signal.num_trial
 signal.mainCharacters(tr,:)= (allCharacters(signal.num_labels(1,tr),:));
