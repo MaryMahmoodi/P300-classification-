@@ -1,4 +1,5 @@
 function l = LogitBoost(n_steps, stepsize, verboseflag)
+
 % -------------------------------------------------------------------------
 % constructor of class LogitBoost
 %
@@ -13,6 +14,7 @@ function l = LogitBoost(n_steps, stepsize, verboseflag)
 % Author: Ulrich Hoffmann - EPFL, 2005
 % Copyright: Ulrich Hoffmann - EPFL
 % -------------------------------------------------------------------------
+
 
 %% set parameters 
 l.n_steps = n_steps;                 % number of boosting iterations
